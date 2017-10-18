@@ -32,10 +32,12 @@ namespace ArithmeticParser
                     }
                 }
                 int result = 0;
+                Dictionary<string, int> parameterValues = new Dictionary<string, int>();
                 //TODO: loop start
                 while (operatorStack.Count != 0)
                 {
-                    int op1 = int.Parse(operandStack.Pop());
+                    var x = operandStack.Pop();
+                    int op1 = int.Parse(x);
                     int op2 = int.Parse(operandStack.Pop());
 
                     char oper = operatorStack.Pop().ToCharArray()[0];
@@ -53,8 +55,15 @@ namespace ArithmeticParser
                         case '/':
                             result = op1 / op2;
                             break;
+                        case '=':
+                            if (parameterValues.ContainsKey(x))
+                                parameterValues.Remove(x);
+                            parameterValues.Add(x, op2);
+                            break;
 
-
+                        default:
+                           Console.WriteLine(parameterValues.Where(y => y.Key == x).FirstOrDefault().Value.ToString());
+                            break;
                             
                     }
                     operandStack.Push(result.ToString());
